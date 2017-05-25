@@ -633,6 +633,8 @@ namespace SmartAccess
                     guiManager.showMessage("Login remoto in corso...");
                     takePhoto();
 
+
+
                     //Thread th = new Thread(() =>
                     //{
                     //    try
