@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Include>
+  <!-- Change this whenever building a new installer.  The fourth number is ignored, so change one of the top three.
+  Otherwise, users will not be able to upgrade properly; Windows Installer will exit with an error instead of upgrading. -->
+  <!-- Also change the version numbers in Properties/AssemblyInfo.cs for each NETMF version supported -->
+  <?define ModuleSoftwareVersion = "1.0.0.0" ?>
+
+  <!-- Alternatively, to synchronize this mainboard version to a kit version, uncomment the below lines, edit the pathname
+  to point to your kit, and comment out the line above.  You also need to edit AssemblyInfo.cs.  See the kit readme.txt 
+  for more details of how and why to do this. -->
+  <!--
+  <?include $(var.SourcePath)..\..\..\..\..\Kits\Polito\KitName\Software\KitName\version.wxi ?>
+  <?define ModuleSoftwareVersion = "$(var.KitVersion)" ?>
+  -->
+
+  <!-- FullModuleName can have spaces, e.g. My Module.  This shows up as the product name in add/remove programs. -->
+  <?define FullModuleName = "ArduinoDistanceRFID" ?>
+
+  <!-- SafeModuleName should match the name printed on the module PCB, without any spaces/punctuation. -->
+  <?define SafeModuleName = "ArduinoDistanceRFID" ?>
+
+  <!-- SafeManufacturer should match the manufacturer name printed on the module PCB, without any spaces/punctuation. -->
+  <?define SafeManufacturer = "Polito" ?>
+
+  <!-- FullManufacturer can have spaces, e.g. Microsoft Research.  This shows up as the publisher name in add/remove programs. -->
+  <?define FullManufacturer = "Polito" ?>
+
+  <!-- These define which versions of NETMF are supported - comment out or delete any unsupported NETMF versions. -->
+  <!-- <?define NETMF41Supported ?> -->
+  <!-- <?define NETMF42Supported ?> -->
+  <?define NETMF43Supported ?>
+  <!-- <?define NETMF44Supported ?> -->
+
+  <!-- No need to change anything below this line. -->
+  <?define OutputFileName = "GTM.$(var.SafeManufacturer).$(var.SafeModuleName)"?>
+  <?define ProjectPath = "ArduinoDistanceRFID" ?>
+
+  <!-- These two should be copied over if upgrading from an older template -->
+  <?define guid_msi_upgrade_code =  "e2bcee53-89c4-4ff0-90aa-30e368f2ae2f" ?>
+  <?define guid_msm_package_id = "69e537ba-b0d7-4943-8788-a2fb884898ab" ?>
+
+  <?define guid_msm_comp_resources_id = "4b29e00f-2963-4268-b9c1-760fe4f17002" ?>
+  <?define guid_msm_comp_registry_id = "0599a6e7-a397-452e-91ee-ed21158dd153" ?>
+  <?define guid_msm_comp_gadgeteerhardware_id = "eb81f226-8196-4ba4-b84d-bfd54ac2808b"?>
+
+  <?define guid_msm_comp_files_id_41 = "4a1265fc-a9cb-4824-a5e8-8a978dbddda8" ?>
+  <?define guid_msm_comp_files_be_id_41 = "3ada4a80-e7bd-4559-8f29-baa2f377800d" ?>
+  <?define guid_msm_comp_files_le_id_41 = "7fb2b047-9fe3-44e6-b0a5-1d64755e46ba" ?>
+
+  <?define guid_msm_comp_files_id_42 = "48b19850-fb38-47eb-9b49-b97bdb94ff1e" ?>
+  <?define guid_msm_comp_files_be_id_42 = "7c15ad33-6315-4cb7-b092-90292bdaeae2" ?>
+  <?define guid_msm_comp_files_le_id_42 = "a488bb9b-d141-4053-b475-25b991424354" ?>
+
+  <?define guid_msm_comp_files_id_43 = "6113700f-4666-4da9-b366-9e9a624cf4b5" ?>
+  <?define guid_msm_comp_files_be_id_43 = "5878095f-4529-4abc-ad5e-873ce4c25adf" ?>
+  <?define guid_msm_comp_files_le_id_43 = "95a64318-b2d1-4a8b-8af0-6c67130a947b" ?>
+
+  <?define guid_msm_comp_files_id_44 = "5ddc3d77-b38a-48e0-924b-2ba3a641c528" ?>
+  <?define guid_msm_comp_files_be_id_44 = "a8774c70-ef91-4f35-8e61-0e0e4d074183" ?>
+  <?define guid_msm_comp_files_le_id_44 = "1a9a81e7-3078-4ffd-ba20-0928e1157a29" ?>
+</Include>
+
