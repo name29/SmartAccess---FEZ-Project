@@ -18,9 +18,6 @@ namespace SmartAccess {
         /// <summary>The Ethernet J11D module using socket 7 of the mainboard.</summary>
         private Gadgeteer.Modules.GHIElectronics.EthernetJ11D ethernetJ11D;
         
-        /// <summary>The Breakout module using socket 9 of the mainboard.</summary>
-        private Gadgeteer.Modules.GHIElectronics.Breakout breakout;
-        
         /// <summary>The Display T35 module using sockets 14, 13, 12 and 10 of the mainboard.</summary>
         private Gadgeteer.Modules.GHIElectronics.DisplayT35 displayT35;
         
@@ -53,7 +50,6 @@ namespace SmartAccess {
         
         private void InitializeModules() {
             this.ethernetJ11D = new GTM.GHIElectronics.EthernetJ11D(7);
-            this.breakout = new GTM.GHIElectronics.Breakout(9);
             this.displayT35 = new GTM.GHIElectronics.DisplayT35(14, 13, 12, 10);
             this.button = new GTM.GHIElectronics.Button(6);
             this.arduinoDistanceRFID = new GTM.Polito.ArduinoDistanceRFID(11);

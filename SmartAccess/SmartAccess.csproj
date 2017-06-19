@@ -18,6 +18,7 @@
     <!-- Default transport and device-->
     <DeployDevice>Gadgeteer</DeployDevice>
     <DeployTransport>USB</DeployTransport>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -87,15 +88,6 @@
     </Reference>
     <Reference Include="GHI.Usb, Version=4.3.8.1, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="GHIElectronics.Gadgeteer.FEZSpider, Version=4.3.8.1, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="GHIElectronics.NETMF.System">
-      <HintPath>Z:\Downloads\gadgeteer-43877\Main\Modules\Seeed\CellularRadio\Software\CellularRadioTest\bin\Release\GHIElectronics.NETMF.System.dll</HintPath>
-    </Reference>
-    <Reference Include="GHIElectronics.NETMF.USBHost">
-      <HintPath>Z:\Downloads\gadgeteer-43877\Main\Modules\Seeed\CellularRadio\Software\CellularRadioTest\bin\Release\GHIElectronics.NETMF.USBHost.dll</HintPath>
-    </Reference>
-    <Reference Include="GTM.GHIElectronics.Breakout, Version=4.3.8.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="GTM.GHIElectronics.Button, Version=4.3.8.1, Culture=neutral, processorArchitecture=MSIL">

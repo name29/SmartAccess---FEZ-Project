@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartAccess", "SmartAccess\SmartAccess.csproj", "{075DA187-1B0D-4F4D-8959-59B9B590C72B}"
-	ProjectSection(ProjectDependencies) = postProject
-		{7AB32580-FDFB-4CCF-876C-81697C251C40} = {7AB32580-FDFB-4CCF-876C-81697C251C40}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArduinoDistanceRFID_43", "ArduinoDistanceRFID\ArduinoDistanceRFID_43\ArduinoDistanceRFID_43.csproj", "{66D97020-6F4F-405A-830D-8AAF09418BB2}"
 EndProject

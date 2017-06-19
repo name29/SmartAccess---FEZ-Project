@@ -138,7 +138,8 @@
     <value>&lt;Glide Version="1.0.7"&gt;
   &lt;Window Name="streamingWindow" Width="320" Height="240" BackColor="FFFFFF"&gt;
     &lt;TextBlock Name="textBlock" X="0" Y="0" Width="320" Height="32" Alpha="255" Text="" TextAlign="Left" TextVerticalAlign="Top" Font="6" FontColor="0" BackColor="000000" ShowBackColor="False"/&gt;
-    &lt;Image Name="imageBox" X="0" Y="32" Width="320" Height="208" Alpha="255"/&gt;
+    &lt;Image Name="imageBox" X="0" Y="32" Width="320" Height="158" Alpha="255"/&gt;
+    &lt;Button Name="btnClear" X="0" Y="190" Width="320" Height="50" Alpha="255" Text="Button" Font="4" FontColor="000000" DisabledFontColor="808080" TintColor="000000" TintAmount="0"/&gt;
   &lt;/Window&gt;
 &lt;/Glide&gt;</value>
   </data>

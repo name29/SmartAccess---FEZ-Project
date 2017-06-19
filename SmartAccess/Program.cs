@@ -138,7 +138,7 @@ namespace SmartAccess
         }
         WebEvent remoteLogin;
 
-        String webserviceHost = "vps.name29.net";
+        String webserviceHost = "192.168.89.1";
         int webserviceHTTPPort = 3000;
         int webserviceSFTPort = 5000;
         String webserviceBaseURL;
@@ -166,6 +166,7 @@ namespace SmartAccess
 
             guiManager = new GUIManager();
             guiManager.OnErrorCancel += GuiManager_OnErrorCancel;
+            guiManager.OnCancel += GuiManager_OnCancel;
 
             webserviceBaseURL = "http://" + webserviceHost + ":" + webserviceHTTPPort + "/";
 
@@ -195,7 +196,7 @@ namespace SmartAccess
             camera.BitmapStreamed += Camera_BitmapStreamed;
 
 
-            audioOutput = breakout.CreateAnalogOutput(Gadgeteer.Socket.Pin.Five);
+            //audioOutput = breakout.CreateAnalogOutput(Gadgeteer.Socket.Pin.Five);
 
             button.Mode = GTM.GHIElectronics.Button.LedMode.OnWhilePressed;
             button.ButtonPressed += Button_ButtonPressed;
@@ -221,16 +222,21 @@ namespace SmartAccess
 
             ethernet_mac_address = sb.ToString();
 
-            //ethernetJ11D.NetworkUp += EthernetJ11D_NetworkUp;
+            //ethernetJ11D.NetworkUp += EthernetJ11Dweblcome_NetworkUp;
             //ethernetJ11D.NetworkDown += EthernetJ11D_NetworkUp;
             //ethernetJ11D.UseDHCP();
-            ethernetJ11D.NetworkSettings.EnableDynamicDns();
-            ethernetJ11D.NetworkSettings.EnableDhcp();
+
+            //ethernetJ11D.NetworkSettings.EnableDynamicDns();
+            //ethernetJ11D.NetworkSettings.EnableDhcp();
+            ethernetJ11D.NetworkSettings.EnableStaticIP("192.168.89.100", "255.255.255.0", "192.168.89.1");
+
             //ethernetJ11D.NetworkSettings.EnableStaticIP("192.168.98.100", "255.255.255.0", "192.168.98.1");
             //string[] dnsserver = { "8.8.8.8", "8.8.4.4" };
             //ethernetJ11D.NetworkSettings.EnableStaticDns(dnsserver);
 
             string ipAddress = ethernetJ11D.NetworkSettings.IPAddress;
+
+
             WebServer.StartLocalServer("0.0.0.0", 3000);
 
             ////Register to path
@@ -252,10 +258,16 @@ namespace SmartAccess
             //rs232.Port.WriteLine("_START");
         }
 
+        private void GuiManager_OnCancel()
+        {
+            if (mode != SmartAccessState.OFFLINE) mode = SmartAccessState.READY;
+            showWelcome();
+        }
+
         private void GuiManager_OnErrorCancel()
         {
             if ( mode != SmartAccessState.OFFLINE ) mode = SmartAccessState.READY;
-            guiManager.showWelcome();
+            showWelcome();
         }
 
         private void Camera_BitmapStreamed(OurCamera sender, Bitmap e)
@@ -411,7 +423,7 @@ namespace SmartAccess
             {
                 line = "_RFID 01020304";
                 counter = 1;
-                ArduinoDistanceRFID_onNewEvent(null, ArduinoDistanceRFID.ARDUINO_EVENT.RFID, "01020304");
+                ArduinoDistanceRFID_onNewEvent(null, new ArduinoDistanceRFID.ArduinoEventArgs(ArduinoDistanceRFID.ARDUINO_EVENT.RFID, "01020304"));
             }
             else if ( counter == 1 )
             {
@@ -427,7 +439,7 @@ namespace SmartAccess
             {
                 line = "_DISTANZA_OK";
                 counter = 0;
-                ArduinoDistanceRFID_onNewEvent(null, ArduinoDistanceRFID.ARDUINO_EVENT.DISTANZA_OK, "");
+                ArduinoDistanceRFID_onNewEvent(null, new ArduinoDistanceRFID.ArduinoEventArgs(ArduinoDistanceRFID.ARDUINO_EVENT.DISTANZA_OK, ""));
             }
 
 
@@ -456,6 +468,7 @@ namespace SmartAccess
                 mode = SmartAccessState.OFFLINE;
                 lastErrorMessage = "";
                 isNetworkUp = false;
+                arduinoDistanceRFID.reset();
             }
             if ( lastErrorMessage != error)
             {
@@ -491,14 +504,14 @@ namespace SmartAccess
             //PlayFile(audioGLOBAL);
             camera.continueStreaming();
             mode = SmartAccessState.TAKE_PHOTO;
-
+            arduinoDistanceRFID.distanceMode();
             guiManager.setStream(testoGLOBAL);
         }
 
         private void clearErrorScreen()
         {
             mode = SmartAccessState.READY;
-            guiManager.showWelcome();
+            showWelcome();
         }
 
 
@@ -518,6 +531,7 @@ namespace SmartAccess
                             else
                             {
                                 mode = SmartAccessState.ERROR;
+                                arduinoDistanceRFID.reset();
                                 guiManager.showErrorWithCancel("ERR07" + suffix + " Ingresso/Uscita non registrata.");
                             }
                         }
@@ -527,6 +541,7 @@ namespace SmartAccess
                             else
                             {
                                 mode = SmartAccessState.ERROR;
+                                arduinoDistanceRFID.reset();
                                 guiManager.showErrorWithCancel("ERR08" + suffix + " Ingresso/Uscita non registrata.");
                             }
                         }
@@ -536,6 +551,7 @@ namespace SmartAccess
                             else
                             {
                                 mode = SmartAccessState.ERROR;
+                                arduinoDistanceRFID.reset();
                                 guiManager.showErrorWithCancel("ERR08" + suffix + " Ingresso/Uscita non registrata. HTTP" + we.Status.ToString());
                             }
                         }
@@ -548,6 +564,7 @@ namespace SmartAccess
                         else
                         {
                             mode = SmartAccessState.ERROR;
+                            arduinoDistanceRFID.reset();
                             guiManager.showErrorWithCancel("ERR18" + suffix + " Ingresso/Uscita non registrata." + se.Message);
                         }
                     }
@@ -559,6 +576,7 @@ namespace SmartAccess
                         else
                         {
                             mode = SmartAccessState.ERROR;
+                            arduinoDistanceRFID.reset();
                             guiManager.showErrorWithCancel("ERR09" + suffix + " Ingresso/Uscita non registrata." + se.ErrorCode.ToString());
                         }
                     }
@@ -568,6 +586,7 @@ namespace SmartAccess
                         else
                         {
                             mode = SmartAccessState.ERROR;
+                            arduinoDistanceRFID.reset();
                             guiManager.showErrorWithCancel("ERR10" + suffix + " Ingresso/Uscita non registrata." + e.Message);
                         }
                     }
@@ -629,11 +648,8 @@ namespace SmartAccess
 
                     responder.Respond(System.Text.Encoding.UTF8.GetBytes("{ success: true }"), "application/json");
 
-                    arduinoDistanceRFID.distanceMode();
                     guiManager.showMessage("Login remoto in corso...");
                     takePhoto();
-
-
 
                     //Thread th = new Thread(() =>
                     //{
@@ -658,6 +674,7 @@ namespace SmartAccess
                 else
                 {
                     mode = SmartAccessState.ERROR;
+                    arduinoDistanceRFID.reset();
                     guiManager.showErrorWithCancel("ERR22 Ingresso/Uscita non registrata");
                     responder.Respond(System.Text.Encoding.UTF8.GetBytes("{ success: false }"), "application/json");
                     return;
@@ -666,6 +683,7 @@ namespace SmartAccess
             else
             {
                 mode = SmartAccessState.ERROR;
+                arduinoDistanceRFID.reset();
                 guiManager.showErrorWithCancel("ERR23 Ingresso/Uscita non registrata");
                 responder.Respond(System.Text.Encoding.UTF8.GetBytes("{ success: false }"), "application/json");
                 return;
@@ -793,7 +811,7 @@ namespace SmartAccess
                     if (t.Contains("member"))
                     {
                         Hashtable member = (Hashtable)t["member"];
-                        if (member.Contains("audio_file") && member.Contains("message") && member.Contains("id") )
+                        if (member.Contains("message") && member.Contains("id") )
                         {
                             testoGLOBAL = (String)member["message"];
                             //audioGLOBAL = new Byte[0];
@@ -820,18 +838,21 @@ namespace SmartAccess
                         else
                         {
                             mode = SmartAccessState.ERROR;
+                            arduinoDistanceRFID.reset();
                             guiManager.showErrorWithCancel("ERR02 Ingresso/Uscita non registrata");
                         }
                     }
                     else
                     {
                         mode = SmartAccessState.ERROR;
+                        arduinoDistanceRFID.reset();
                         guiManager.showErrorWithCancel("ERR19 Ingresso/Uscita non registrata");
                     }
                 }
                 else
                 {
                     mode = SmartAccessState.ERROR;
+                    arduinoDistanceRFID.reset();
                     guiManager.showErrorWithCancel("ERR03 Ingresso/Uscita non registrata");
                 }
             }
@@ -860,6 +881,7 @@ namespace SmartAccess
             {
                 mode = SmartAccessState.ERROR;
                 guiManager.showErrorWithCancel("ERR04 Ingresso/Uscita non registrata HTTP:" + response.StatusCode);
+                arduinoDistanceRFID.reset();
             }
         }
 
@@ -886,6 +908,7 @@ namespace SmartAccess
             {
                 guiManager.showErrorWithCancel("ERR05 Ingresso/Uscita non registrata HTTP:" + response.StatusCode);
                 mode = SmartAccessState.ERROR;
+                arduinoDistanceRFID.reset();
             }
         }
 
@@ -961,12 +984,14 @@ namespace SmartAccess
                     else
                     {
                         mode = SmartAccessState.ERROR;
+                        arduinoDistanceRFID.reset();
                         guiManager.showErrorWithCancel("ERR13 Ingresso/Uscita non registrata");
                     }
                 }
                 else
                 {
                     mode = SmartAccessState.ERROR;
+                    arduinoDistanceRFID.reset();
                     guiManager.showErrorWithCancel("ERR14 Ingresso/Uscita non registrata");
                 }
             }
@@ -974,6 +999,7 @@ namespace SmartAccess
             {
                 guiManager.showErrorWithCancel("ERR06 Ingresso/Uscita non registrata HTTP:" + response.StatusCode);
                 mode = SmartAccessState.ERROR;
+                arduinoDistanceRFID.reset();
             }
         }
 
@@ -1049,15 +1075,27 @@ namespace SmartAccess
         }
         */
 
-        private void ArduinoDistanceRFID_onNewEvent(ArduinoDistanceRFID sender, ArduinoDistanceRFID.ARDUINO_EVENT arduino_event, string payload)
+        private void showWelcome()
         {
+            guiManager.showWelcome();
+            arduinoDistanceRFID.reset();
+        }
+
+        private void ArduinoDistanceRFID_onNewEvent(ArduinoDistanceRFID sender, ArduinoDistanceRFID.ArduinoEventArgs args)
+        {
+            ArduinoDistanceRFID.ARDUINO_EVENT arduino_event = args.arduino_event;
+            String payload = args.payload;
+
             if ( arduino_event == ArduinoDistanceRFID.ARDUINO_EVENT.START)
             {
                 try
                 {
-                    mode = SmartAccessState.READY;
-                    guiManager.resetStatus();
-                    guiManager.showWelcome();
+                    if (mode != SmartAccessState.ERROR && mode != SmartAccessState.OFFLINE)
+                    {
+                        mode = SmartAccessState.READY;
+                        guiManager.resetStatus();
+                        showWelcome();
+                    }
                 }
                 catch (Exception)
                 {

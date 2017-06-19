@@ -35,16 +35,20 @@ namespace Gadgeteer.Modules.Polito
             /// <summary>
             /// 
             /// </summary>
+            DEBUG,
+            /// <summary>
+            /// 
+            /// </summary>
             NON_RICONOSCIUTO
         }
+
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="arduino_event"></param>
-        /// <param name="payload"></param>
-        public delegate void NewEventHandler(ArduinoDistanceRFID sender, ARDUINO_EVENT arduino_event, String payload);
+        /// <param name="args"></param>
+        public delegate void NewEventHandler(ArduinoDistanceRFID sender, ArduinoEventArgs args);
         
         /// <summary>
         /// 
@@ -81,23 +85,30 @@ namespace Gadgeteer.Modules.Polito
 
         private void Port_LineReceived(GTI.Serial sender, string line)
         {
-            String serialRead = line.Trim(new[] { '\r', '\n' });
+            String[] messages = line.Split("\r\n".ToCharArray());
 
-            if (serialRead == "_START") onArduinoEvent(this, ARDUINO_EVENT.START, "");
-            else if (serialRead == "_DISTANZA_OK") onArduinoEvent(this, ARDUINO_EVENT.DISTANZA_OK, "");
-            else if (startWidth(serialRead, "_RFID"))
+            foreach (String message in messages)
             {
-                string[] split = serialRead.Split(' ');
-                if (split.Length > 1)
+                if (message == "_START") onArduinoEvent(this, new ArduinoEventArgs(ARDUINO_EVENT.START, ""));
+                else if (message == "_DISTANZA_OK") onArduinoEvent(this, new ArduinoEventArgs(ARDUINO_EVENT.DISTANZA_OK, ""));
+                else if (startWidth(message, "_RFID"))
                 {
-                    onArduinoEvent(this, ARDUINO_EVENT.RFID, split[1]);
+                    string[] split = message.Split(' ');
+                    if (split.Length > 1)
+                    {
+                        onArduinoEvent(this, new ArduinoEventArgs(ARDUINO_EVENT.RFID, split[1]));
+                    }
+                    else
+                    {
+                        onArduinoEvent(this, new ArduinoEventArgs(ARDUINO_EVENT.NON_RICONOSCIUTO, message));
+                    }
                 }
-                else
+                else if (startWidth(message, "DEBUG"))
                 {
-                    onArduinoEvent(this, ARDUINO_EVENT.NON_RICONOSCIUTO, serialRead);
+                    onArduinoEvent(this, new ArduinoEventArgs(ARDUINO_EVENT.DEBUG, message));
                 }
+                else onArduinoEvent(this, new ArduinoEventArgs(ARDUINO_EVENT.NON_RICONOSCIUTO, message));
             }
-            else onArduinoEvent(this, ARDUINO_EVENT.NON_RICONOSCIUTO, serialRead);
         }
 
         private Boolean startWidth(String str, String search)
@@ -108,10 +119,35 @@ namespace Gadgeteer.Modules.Polito
         /// <summary>
         /// 
         /// </summary>
+        public class ArduinoEventArgs
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public ARDUINO_EVENT arduino_event;
+            /// <summary>
+            /// 
+            /// </summary>
+            public String payload;
+  
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="e"></param>
+            /// <param name="s"></param>
+            public ArduinoEventArgs(ARDUINO_EVENT e, string s)
+            {
+                arduino_event = e;
+                payload = s;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="sender"></param>
-        /// <param name="arduino_event"></param>
-        /// <param name="payload"></param>
-        protected virtual void onArduinoEvent(ArduinoDistanceRFID sender, ARDUINO_EVENT arduino_event,String payload)
+        /// <param name="args"></param>
+        protected virtual void onArduinoEvent(ArduinoDistanceRFID sender, ArduinoEventArgs args)
         {
             if (this.onNewEventInt == null)
             {
@@ -122,11 +158,10 @@ namespace Gadgeteer.Modules.Polito
             // If the event is null then it returns false.
             // If it is called while not on the Dispatcher thread, it returns false but also re-invokes this method on the Dispatcher.
             // If on the thread, it returns true so that the caller can execute the event.
-            object[] param = new object[2] { arduino_event, payload };
 
-            if (Program.CheckAndInvoke(onNewEvent, this.onNewEventInt, sender, param ))
+            if (Program.CheckAndInvoke(onNewEvent, this.onNewEventInt, sender, args ))
             {
-                this.onNewEvent(sender, arduino_event,payload);
+                this.onNewEvent(sender,args);
             }
         }
     }

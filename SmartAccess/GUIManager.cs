@@ -13,8 +13,13 @@ namespace SmartAccess
 
         public event ErrorCancelHandler OnErrorCancel;
 
+        public delegate void CancelHandler();
+
+        public event CancelHandler OnCancel;
+
         Thread guiThread;
         bool stopTimer = false;
+        bool door = false;
         GT.Timer timerResetThankYou;
         enum mode
         {
@@ -208,6 +213,7 @@ namespace SmartAccess
         {
             lock (this)
             {
+                door = true;
                 Boolean loadedNew = false;
                 GHI.Glide.Display.Window window = Glide.MainWindow;
                 if (window == null || window.Name != "messageImageButtonWindow")
@@ -287,9 +293,13 @@ namespace SmartAccess
 
         private void Btn_TapEvent(object sender)
         {
-            OnErrorCancel?.Invoke();
+            if (door)
+            {
+                door = false;
+                OnErrorCancel?.Invoke();
+            }
 
-            showWelcome();
+            //showWelcome();
         }
 
         private void messageImageWindow(String message,Bitmap img, GT.Color color)
@@ -301,6 +311,7 @@ namespace SmartAccess
         {
             lock (this)
             {
+                door = true;
                 if (text != null) Debug.Print(text);
                 Boolean loadedNew = false;
                 GHI.Glide.Display.Window window = Glide.MainWindow;
@@ -319,6 +330,15 @@ namespace SmartAccess
                     window.FillRect(textBlock.Rect);
                     textBlock.Invalidate();
                 }
+
+
+                GHI.Glide.UI.Button btn = (GHI.Glide.UI.Button)window.GetChildByName("btnClear");
+                btn.Text = "Cancel";
+
+                window.TapEvent += Btn_TapEventCancel;
+                btn.TapEvent += Btn_TapEventCancel;
+                btn.Visible = true;
+
                 if (img != null)
                 {
                     GHI.Glide.UI.Image image = (GHI.Glide.UI.Image)window.GetChildByName("imageBox");
@@ -335,6 +355,17 @@ namespace SmartAccess
                     //window.Invalidate();
                 }
             }
+        }
+
+        private void Btn_TapEventCancel(object sender)
+        {
+            if (door)
+            {
+                OnCancel?.Invoke();
+                door = false;
+            }
+
+            //showWelcome();
         }
     }
 }
