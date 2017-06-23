@@ -76,7 +76,7 @@ namespace SmartAccess
             stopTimer = true;
             isStreaming = false;
             guiMode = mode.NORMAL;
-            messageImageWindow("Sistema attivo",null, GT.Color.Green);
+            messageImageWindow("The system is ready",null, GT.Color.Green);
         }
 
         public void showWeather(String message, String icon)
@@ -147,7 +147,7 @@ namespace SmartAccess
             if (guiMode != mode.NORMAL) return;
 
             isStreaming = false;
-            showTemp("Grazie! Dati salvati correttamente =)",GT.Color.Green,10000);
+            showTemp("Thank you! Data saved =)",GT.Color.Green,10000);
         }
 
         public void showTemp(String msg,GT.Color color,int hideInterval)

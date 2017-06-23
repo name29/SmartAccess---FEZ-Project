@@ -206,7 +206,7 @@ namespace SmartAccess
                 isPhyNetworkUp = false;
                 //WebServer.StopLocalServer();
                 isNetworkUp = false;
-                setSystemOffline("ERR12 Server non raggiungibile");
+                setSystemOffline("ERR12 The server is not reachable");
             }
 
             Microsoft.SPOT.Net.NetworkInformation.NetworkChange.NetworkAvailabilityChanged += NetworkChange_NetworkAvailabilityChanged;
@@ -281,7 +281,7 @@ namespace SmartAccess
 
                     pictureGLOBAL = new GT.Picture(bmpFile, GT.Picture.PictureEncoding.BMP);
 
-                    guiManager.setStream("Foto scattata con successo! Salvataggio in corso...", e);
+                    guiManager.setStream("Photo taken successfully!Saving in progress...", e);
                     saveAndUploadPhoto();
                 }
                 else
@@ -337,7 +337,7 @@ namespace SmartAccess
                 else
                 {
                     isNetworkUp = false;
-                    setSystemOffline("ERR11 Server non raggiungibile");
+                    setSystemOffline("ERR11 The server is not reachable");
                 }
             }
         }
@@ -405,7 +405,7 @@ namespace SmartAccess
                 {
                     //                WebServer.StopLocalServer();
                     isNetworkUp = false;
-                    setSystemOffline("ERR12 Server non raggiungibile");
+                    setSystemOffline("ERR12 The server is not reachable");
                 }
             }
         }
@@ -527,32 +527,32 @@ namespace SmartAccess
 
                         if (we.Status == WebExceptionStatus.Timeout)
                         {
-                            if (setOffline) setSystemOffline("ERR07"+suffix+ " Server non raggiungibile");
+                            if (setOffline) setSystemOffline("ERR07"+suffix+ " The server is not reachable");
                             else
                             {
                                 mode = SmartAccessState.ERROR;
                                 arduinoDistanceRFID.reset();
-                                guiManager.showErrorWithCancel("ERR07" + suffix + " Ingresso/Uscita non registrata.");
+                                guiManager.showErrorWithCancel("ERR07" + suffix + " The operation was not recorded.");
                             }
                         }
                         else if (we.Status == WebExceptionStatus.ConnectFailure)
                         {
-                            if (setOffline) setSystemOffline("ERR08" + suffix + " Server non raggiungibile");
+                            if (setOffline) setSystemOffline("ERR08" + suffix + " The server is not reachable");
                             else
                             {
                                 mode = SmartAccessState.ERROR;
                                 arduinoDistanceRFID.reset();
-                                guiManager.showErrorWithCancel("ERR08" + suffix + " Ingresso/Uscita non registrata.");
+                                guiManager.showErrorWithCancel("ERR08" + suffix + " The operation was not recorded.");
                             }
                         }
                         else
                         {
-                            if (setOffline) setSystemOffline("ERR08" + suffix + " Server non raggiungibile" + we.Status.ToString());
+                            if (setOffline) setSystemOffline("ERR08" + suffix + " The server is not reachable" + we.Status.ToString());
                             else
                             {
                                 mode = SmartAccessState.ERROR;
                                 arduinoDistanceRFID.reset();
-                                guiManager.showErrorWithCancel("ERR08" + suffix + " Ingresso/Uscita non registrata. HTTP" + we.Status.ToString());
+                                guiManager.showErrorWithCancel("ERR08" + suffix + " The operation was not recorded. HTTP" + we.Status.ToString());
                             }
                         }
                     }
@@ -560,34 +560,34 @@ namespace SmartAccess
                     {
                         SFTException se = (SFTException)e;
 
-                        if (setOffline) setSystemOffline("ERR17" + suffix + " Server non raggiungibile " + se.Message);
+                        if (setOffline) setSystemOffline("ERR17" + suffix + " The server is not reachable " + se.Message);
                         else
                         {
                             mode = SmartAccessState.ERROR;
                             arduinoDistanceRFID.reset();
-                            guiManager.showErrorWithCancel("ERR18" + suffix + " Ingresso/Uscita non registrata." + se.Message);
+                            guiManager.showErrorWithCancel("ERR18" + suffix + " The operation was not recorded." + se.Message);
                         }
                     }
                     else if (e is SocketException)
                     {
                         SocketException se = (SocketException)e;
 
-                        if (setOffline) setSystemOffline("ERR09" + suffix + " Server non raggiungibile " + se.ErrorCode.ToString());
+                        if (setOffline) setSystemOffline("ERR09" + suffix + " The server is not reachable " + se.ErrorCode.ToString());
                         else
                         {
                             mode = SmartAccessState.ERROR;
                             arduinoDistanceRFID.reset();
-                            guiManager.showErrorWithCancel("ERR09" + suffix + " Ingresso/Uscita non registrata." + se.ErrorCode.ToString());
+                            guiManager.showErrorWithCancel("ERR09" + suffix + " The operation was not recorded." + se.ErrorCode.ToString());
                         }
                     }
                     else
                     {
-                        if (setOffline) setSystemOffline("ERR10" + suffix + " Server non raggiungibile" + e.Message);
+                        if (setOffline) setSystemOffline("ERR10" + suffix + " The server is not reachable" + e.Message);
                         else
                         {
                             mode = SmartAccessState.ERROR;
                             arduinoDistanceRFID.reset();
-                            guiManager.showErrorWithCancel("ERR10" + suffix + " Ingresso/Uscita non registrata." + e.Message);
+                            guiManager.showErrorWithCancel("ERR10" + suffix + " The operation was not recorded." + e.Message);
                         }
                     }
                 }
@@ -664,7 +664,7 @@ namespace SmartAccess
                     //    catch (Exception e)
                     //    {
                     //        mode = SmartAccessState.ERROR;
-                    //        guiManager.showErrorWithCancel("ERR20 Ingresso/Uscita non registrata");
+                    //        guiManager.showErrorWithCancel("ERR20 The operation was not recorded");
                     //        return;
                     //    }
 
@@ -675,7 +675,7 @@ namespace SmartAccess
                 {
                     mode = SmartAccessState.ERROR;
                     arduinoDistanceRFID.reset();
-                    guiManager.showErrorWithCancel("ERR22 Ingresso/Uscita non registrata");
+                    guiManager.showErrorWithCancel("ERR22 The operation was not recorded");
                     responder.Respond(System.Text.Encoding.UTF8.GetBytes("{ success: false }"), "application/json");
                     return;
                 }
@@ -684,7 +684,7 @@ namespace SmartAccess
             {
                 mode = SmartAccessState.ERROR;
                 arduinoDistanceRFID.reset();
-                guiManager.showErrorWithCancel("ERR23 Ingresso/Uscita non registrata");
+                guiManager.showErrorWithCancel("ERR23 The operation was not recorded");
                 responder.Respond(System.Text.Encoding.UTF8.GetBytes("{ success: false }"), "application/json");
                 return;
             }
@@ -745,7 +745,7 @@ namespace SmartAccess
             {
                 if (response.StatusCode != "200")
                 {
-                    setSystemOffline(response.StatusCode);
+                    setSystemOffline("ERR25K HTTP:"+response.StatusCode);
                     isNetworkUp = false;
                 }
                 else
@@ -773,7 +773,7 @@ namespace SmartAccess
         {
             if ( isNetworkUp )
             {
-                guiManager.showMessage("Interrogazione server in corso...");
+                guiManager.showMessage("Querying the server...");
 
                 GETContent getContent = new GETContent();
                 HttpRequest req = HttpHelper.CreateHttpGetRequest(webserviceBaseURL +"rfid/"+rfidIDGLOBAL,getContent,connection_timeout);
@@ -829,7 +829,7 @@ namespace SmartAccess
                             //catch (Exception e)
                             //{
                             //    mode = SmartAccessState.ERROR;
-                            //    guiManager.showErrorWithCancel("ERR15 Ingresso/Uscita non registrata");
+                            //    guiManager.showErrorWithCancel("ERR15 The operation was not recorded");
                             //}
 
                             takePhoto();
@@ -839,21 +839,21 @@ namespace SmartAccess
                         {
                             mode = SmartAccessState.ERROR;
                             arduinoDistanceRFID.reset();
-                            guiManager.showErrorWithCancel("ERR02 Ingresso/Uscita non registrata");
+                            guiManager.showErrorWithCancel("ERR02 The operation was not recorded");
                         }
                     }
                     else
                     {
                         mode = SmartAccessState.ERROR;
                         arduinoDistanceRFID.reset();
-                        guiManager.showErrorWithCancel("ERR19 Ingresso/Uscita non registrata");
+                        guiManager.showErrorWithCancel("ERR19 The operation was not recorded");
                     }
                 }
                 else
                 {
                     mode = SmartAccessState.ERROR;
                     arduinoDistanceRFID.reset();
-                    guiManager.showErrorWithCancel("ERR03 Ingresso/Uscita non registrata");
+                    guiManager.showErrorWithCancel("ERR03 The operation was not recorded");
                 }
             }
             else if (response.StatusCode == "404")
@@ -862,7 +862,7 @@ namespace SmartAccess
                 {
                     mode = SmartAccessState.PROGRAM_RFID;
 
-                    guiManager.showMessage("Creazione RFID nel database...");
+                    guiManager.showMessage("Creation of the rfid...");
 
                     //rs232.Port.WriteLine("_START");
 
@@ -880,7 +880,7 @@ namespace SmartAccess
             else
             {
                 mode = SmartAccessState.ERROR;
-                guiManager.showErrorWithCancel("ERR04 Ingresso/Uscita non registrata HTTP:" + response.StatusCode);
+                guiManager.showErrorWithCancel("ERR04 The operation was not recorded HTTP:" + response.StatusCode);
                 arduinoDistanceRFID.reset();
             }
         }
@@ -901,12 +901,12 @@ namespace SmartAccess
             else if (response.StatusCode == "200")
             {
                 mode = SmartAccessState.READY;
-                guiManager.showTemp("Rfid non associata a nessun dipendente =)", GT.Color.Orange, 10000);
+                guiManager.showTemp("Rfid not associated with any employee =)", GT.Color.Orange, 10000);
 
             }
             else
             {
-                guiManager.showErrorWithCancel("ERR05 Ingresso/Uscita non registrata HTTP:" + response.StatusCode);
+                guiManager.showErrorWithCancel("ERR05 The operation was not recorded HTTP:" + response.StatusCode);
                 mode = SmartAccessState.ERROR;
                 arduinoDistanceRFID.reset();
             }
@@ -985,19 +985,19 @@ namespace SmartAccess
                     {
                         mode = SmartAccessState.ERROR;
                         arduinoDistanceRFID.reset();
-                        guiManager.showErrorWithCancel("ERR13 Ingresso/Uscita non registrata");
+                        guiManager.showErrorWithCancel("ERR13 The operation was not recorded");
                     }
                 }
                 else
                 {
                     mode = SmartAccessState.ERROR;
                     arduinoDistanceRFID.reset();
-                    guiManager.showErrorWithCancel("ERR14 Ingresso/Uscita non registrata");
+                    guiManager.showErrorWithCancel("ERR14 The operation was not recorded");
                 }
             }
             else
             {
-                guiManager.showErrorWithCancel("ERR06 Ingresso/Uscita non registrata HTTP:" + response.StatusCode);
+                guiManager.showErrorWithCancel("ERR06 The operation was not recorded HTTP:" + response.StatusCode);
                 mode = SmartAccessState.ERROR;
                 arduinoDistanceRFID.reset();
             }
@@ -1106,7 +1106,7 @@ namespace SmartAccess
                 if (mode == SmartAccessState.TAKE_PHOTO)
                 {
                     mode = SmartAccessState.TAKEING_PHOTO;
-                    guiManager.setStream("Foto in corso!");
+                    guiManager.setStream("Photos in progress!");
                 }
             }
             else if ( arduino_event == ArduinoDistanceRFID.ARDUINO_EVENT.RFID)
